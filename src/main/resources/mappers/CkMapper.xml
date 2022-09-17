@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.zx.play.mappers.CkMapper">
+
+
+    <update id="createWildTable">
+        create table ${tableName}(
+                                    uid String,
+                                    ${tagName}
+        ) engine =MergeTree
+   order by (uid)
+
+    </update>
+
+    <delete id="dropTable">
+        drop table  if exists ${tableName}
+
+    </delete>
+
+    <update id="insert">
+        insert into table ${tagetName}
+        select tag.1,if(tag.2='','0',tag.2), groupBitmapState(toUInt64(uid)),#{do_date} dt
+        from (
+                 select uid,
+                        arrayJoin([ ${tagSql}
+                                    ]) tag
+                 from ${tableName}
+             ) t group by tag;
+
+    </update>
+
+    <update id="deleteBitMapByDate">
+
+        alter table ${table} delete where dt = #{dt}
+
+    </update>
+
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.zx.play.mappers.TaskTAgRuleMapper">
+
+
+    <select id="getTaskTagRuleById" resultType="com.zx.play.bean.TaskTagRule">
+
+        SELECT
+            task_tag_rule.*, tag_info.`tag_name` subTagValue
+        FROM task_tag_rule JOIN tag_info
+                                ON task_tag_rule.`sub_tag_id` = tag_info.`id`
+        WHERE task_id = #{id}
+    </select>
+
+
+</mapper>
